@@ -1,5 +1,3 @@
-import json
-import urllib.parse
 import boto3
 
 print('Loading function')
@@ -18,16 +16,14 @@ def lambda_handler(event, context):
     # Get response
     response = s3.get_object(Bucket=bucket, Key=key)
     
-    # Check the file type - looking for only plain/text
     # Read the  file content
     file_content = str(response['Body'].read())
-    
     words = file_content.split()
     total_words = len(words)
     message = "The word count in the file {} is {}".format(key, total_words)
     # Send email
     sns_response = sns.publish(
-        TargetArn='arn:aws:sns:us-west-2:318846086362:Lambda-word-count',
+        TargetArn='Your SNS ARN HERE',
         Message=message,
         Subject="Word Count Result"
     )
